@@ -1,0 +1,7 @@
+langchain>=0.2.0
+langchain-google-genai>=1.0.6
+langchain-community>=0.2.0
+langgraph>=0.1.0
+faiss-cpu>=1.8.0
+python-dotenv>=1.0.1
+pydantic>=2.7.0
