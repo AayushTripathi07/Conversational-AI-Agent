@@ -124,6 +124,6 @@ python main.py
 
 **Author: Aayush Tripathi**
 
-[GitHub](https://github.com/AayushTripathi07) • [LinkedIn](https://linkedin.com/in/aayushtripathi07)
+[GitHub](https://github.com/AayushTripathi07) • [LinkedIn](https://www.linkedin.com/in/aayush0712/)
 
 </div>
