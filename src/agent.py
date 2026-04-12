@@ -2,6 +2,7 @@ import os
 from typing import Annotated, TypedDict, Optional
 
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.messages import SystemMessage, AIMessage
 from langgraph.graph import StateGraph, START, END
@@ -12,9 +13,11 @@ from pydantic import BaseModel, Field
 from src.tools import mock_lead_capture
 from src.rag import setup_rag
 
-# Initialize the LLM
-# NOTE: Make sure GOOGLE_API_KEY is loaded in environment variable.
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0, max_retries=0)
+# Initialize the Dual-Brain LLM Engine
+# NOTE: Make sure GOOGLE_API_KEY and GROQ_API_KEY are loaded in environment variables.
+gemini_llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0, max_retries=0)
+groq_llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.2, max_retries=1)
+llm = gemini_llm.with_fallbacks([groq_llm])
 
 # Initialize Retriever immediately during import or later.
 retriever = setup_rag("data/knowledge_base.json")
@@ -49,7 +52,9 @@ def detect_intent(state: AgentState):
         ("placeholder", "{messages}")
     ])
     
-    structured_llm = llm.with_structured_output(IntentClassification)
+    structured_gemini = gemini_llm.with_structured_output(IntentClassification)
+    structured_groq = groq_llm.with_structured_output(IntentClassification)
+    structured_llm = structured_gemini.with_fallbacks([structured_groq])
     chain = prompt | structured_llm
     
     # Process intent. If API fails to structure, default to greeting
@@ -70,13 +75,27 @@ def handle_greeting(state: AgentState):
 
 def handle_inquiry(state: AgentState):
     """Node: Answers questions using the RAG retriever (Knowledge Base)."""
-    last_msg = state["messages"][-1].content
-    docs = retriever.invoke(last_msg)
+    
+    # 1. Contextualize the question for multi-turn capability
+    if len(state["messages"]) > 1:
+        contextualize_prompt = ChatPromptTemplate.from_messages([
+            ("system", "Given a chat history and the latest user question, "
+             "formulate a standalone question which can be understood without the context. "
+             "Ensure the output is a single, naturally spaced sentence. Do NOT answer it."),
+            ("placeholder", "{messages}")
+        ])
+        contextualized_q = llm.invoke(contextualize_prompt.format_messages(messages=state["messages"])).content
+    else:
+        contextualized_q = state["messages"][-1].content
+
+    # 2. Retrieve documents using the standalone contextualized question
+    docs = retriever.invoke(contextualized_q)
     context = "\n".join([doc.page_content for doc in docs])
     
+    # 3. Answer the user
     prompt = ChatPromptTemplate.from_messages([
-        ("system", "You are an assistant for AutoStream. Answer the user's question using ONLY the provided knowledge base context.\n"
-                   "Do not make up prices or plans. If you don't know, say you don't know.\n\nContext:\n{context}"),
+        ("system", "You are a professional assistant for AutoStream. Answer the user's question clearly and helpfuly based on the provided context.\n"
+                   "Write in a friendly, conversational tone with standard spacing and paragraphs.\n\nContext:\n{context}"),
         ("placeholder", "{messages}")
     ])
     
@@ -90,7 +109,9 @@ def parse_lead_details(state: AgentState):
                    "Creator Platform generally means YouTube, TikTok, Instagram, etc."),
         ("placeholder", "{messages}")
     ])
-    structured_llm = llm.with_structured_output(LeadDetails)
+    structured_gemini = gemini_llm.with_structured_output(LeadDetails)
+    structured_groq = groq_llm.with_structured_output(LeadDetails)
+    structured_llm = structured_gemini.with_fallbacks([structured_groq])
     
     try:
         extracted = structured_llm.invoke(prompt.format_messages(messages=state["messages"]))

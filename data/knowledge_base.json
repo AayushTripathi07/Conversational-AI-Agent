@@ -21,5 +21,10 @@
   "company_policies": [
     "No refunds after 7 days",
     "24/7 support available only on Pro plan"
+  ],
+  "about_autostream": [
+    "AutoStream is an AI-powered video editing SaaS that automates the creation of short-form content.",
+    "It uses advanced neural networks to cut, caption, and optimize videos for platforms like YouTube, TikTok, and Instagram.",
+    "Users simply upload raw footage, and the AI handles the narrative framing and visual polish automatically."
   ]
 }

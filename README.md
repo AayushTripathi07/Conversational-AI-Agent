@@ -1,128 +1,164 @@
 <div align="center">
 
-# 🤖 AutoStream AI Lead Agent
+# 🤖 AutoStream AI: High-Availability Agentic Ecosystem
 
-### Social-to-Lead Agentic Workflow & Conversational AI Platform
+### The Definitive Social-to-Lead Conversational Platform
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue?logo=python&logoColor=white)](https://python.org)
 [![LangGraph](https://img.shields.io/badge/LangGraph-0.1+-green?logo=langchain&logoColor=white)](https://langchain.com)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-black?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.35+-red?logo=streamlit&logoColor=white)](https://streamlit.io)
 [![GenAI](https://img.shields.io/badge/Gemini_2.5_Flash-AI-orange?logo=google&logoColor=white)](https://ai.google.dev)
-[![FAISS](https://img.shields.io/badge/FAISS-VectorStore-purple)](https://github.com/facebookresearch/faiss)
+[![Groq](https://img.shields.io/badge/Groq_Llama_3.3-Fallback-purple)](https://groq.com)
+[![FAISS](https://img.shields.io/badge/FAISS-Vector_DB-purple)](https://github.com/facebookresearch/faiss)
+[![SQLite](https://img.shields.io/badge/SQLite-CRM_Database-lightblue?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
 
-**AutoStream AI is an advanced, state-driven LangGraph conversational agent designed to seamlessly transition users from casual conversation to qualified business leads using intelligent intent-detection and local RAG retrieval.**
+**AutoStream AI is a production-grade, state-driven agentic workflow engineered to automate the pipeline from social interaction to CRM lead capture. Powered by LangGraph and a Dual-Core LLM engine, it ensures 100% availability through intelligent failover and multi-database persistence.**
 
 </div>
 
 ---
 
-## ✨ Features
+## 🌟 Project Overview
+**AutoStream AI** is an intelligent "Sales-Agent-in-a-Box." It is built to simulate a high-performing sales representative that never sleeps. By combining modern AI orchestration (LangGraph) with a high-speed web stack, it automatically guides potential customers from casual curiosity to qualified business leads.
 
-### 1. The Core AI Brain
-*   **Primary Brain**: **Google Gemini 2.5 Flash**. Used for deep reasoning, intent classification, and structured data extraction.
-*   **State Management**: **LangGraph** orchestrates the logic flow deterministically, ensuring that backend tool calls are meticulously coordinated and never trigger prematurely.
+This project isn't just a chatbot; it is a **complete autonomous ecosystem** that understands intent, retrieves company knowledge, and writes to physical databases without human oversight.
 
-### 2. Multi-Node Intent Routing
-The conversation dynamically branches based on the user's continuously evaluated intent:
-*   **Casual Greeting**: Responds politely without activating heavy retrieval stacks.
-*   **Knowledge Inquiry**: Triggers the RAG pipeline when questions about pricing and product features are detected.
-*   **High-Intent Lead**: Shifts the workflow automatically to a secure data-collection state.
+### ❓ The Problem
+In modern digital marketing, **60-70% of leads are lost** due to slow response times or disconnected systems. Potential customers ask questions at 3:00 AM, and if no one is there to answer or capture their contact info, they leave. Standard chatbots often fail because they are "fragile"—if their API limit is hit or the question is too complex, they crash or give generic answers.
 
-### 3. Smart Retrieval-Augmented Generation (RAG)
-*   **HuggingFace Embeddings**: Uses `all-MiniLM-L6-v2` to vectorize the internal Knowledge Base locally.
-*   **FAISS Vector Store**: Executes millisecond-latency similarity searches to perfectly answer product support queries without hallucinating.
-
-### 4. Context-Aware Lead Capture
-*   **Memory Tracking**: The AI maintains conversation history natively. If the user mentions "YouTube," it records the platform silently.
-*   **Targeted Questioning**: It only asks the user for *missing* information (Name, Email) before automatically executing the Mock API Backend to capture the lead.
+### 💡 The Solution
+AutoStream AI solves this through **Intelligence-First Automation**:
+- **Always-On RAG**: It uses a Vector Database (FAISS) to give accurate, data-backed answers about your product instantly.
+- **Fail-Safe Architecture**: It uses a Dual-Brain system. If Google Gemini is overloaded, it instantly switches to Llama-3.3 on Groq. The customer never sees an error.
+- **Automatic CRM Injection**: It identifies "High Intent" users and extracts their details (Name, Email, Platform) into a structured SQL database automatically.
 
 ---
 
-## 🏗️ Project Architecture
+
+## 🛠️ Complete Tech Stack & Deep Details
+
+### 1. The Dual-Core "Fail-Safe" Brain
+*   **Primary Engine**: **Google Gemini 2.5 Flash**. Orchestrates high-reasoning tasks and structured data extraction. (Config: `temperature=0`, `max_retries=0`).
+*   **Fallback Engine**: **Groq (Llama 3.3 70B Versatile)**. Connected via LangChain `.with_fallbacks()`. If Gemini's API throws a `429 ResourceExhausted` (Quota Limit), the system seamlessly reroutes the prompt to Groq's high-speed LPUs in milliseconds. (Config: `temperature=0`, `max_retries=1`).
+
+### 2. State-Driven Orchestration (LangGraph)
+*   **Workflow Engine**: Uses **LangGraph** to manage the conversation as a cyclic state machine.
+*   **Persistence**: Utilizes `MemorySaver` checkpoints to preserve conversation history across separate API calls, indexed by a unique `thread_id`.
+*   **Nodes**: Includes specialized nodes for `detect_intent`, `handle_greeting`, `handle_inquiry` (RAG), `parse_lead_details` (Pydantic), and `manage_lead` (CRM Tool).
+
+### 3. Smart Knowledge Engine (RAG & Vector Search)
+*   **Vector Database**: **FAISS** (Facebook AI Similarity Search). Stores the vectorized company knowledge base.
+*   **Embeddings Model**: **HuggingFace (`all-MiniLM-L6-v2`)**. Runs locally on the CPU for ultra-fast, cost-free vectorization.
+*   **Multi-Turn Re-Contextualizer**: Before querying FAISS, a dedicated prompt re-writes the user's latest message based on chat history to ensure pronouns and follow-up questions are correctly resolved.
+
+### 4. Enterprise CRM Storage (SQLite)
+*   **Database**: **SQLite3**.
+*   **Schema**: A structured `leads` table containing `id`, `name`, `email`, `platform`, and `timestamp` (ISO format).
+*   **Persistence**: Permanently stores high-intent leads captured by the agent, enabling long-term sales tracking.
+
+### 5. Deployment & Interface Layer
+*   **Backend Nerve Center**: **FastAPI**. Exposes `/chat/` (Agent execution) and `/leads/` (CRM data retrieval) REST endpoints.
+*   **Frontend Terminal**: **Streamlit**. A premium, dark-mode conversational UI featuring real-time message streaming and an integrated **Admin Sidebar Dashboard** for live CRM monitoring.
+
+---
+
+## 🏗️ Detailed Project Architecture
 
 ```mermaid
 flowchart TD
-    User(["👤 User"])
-    CLI["🖥️ Chat Interface\n(main.py)"]
-    Graph["⚡ LangGraph State Engine\n(agent.py)"]
+    User(["👤 Web User / Admin"])
+    UI["🖥️ Streamlit Frontend\n(ui.py)"]
+    API["⚡ FastAPI Backend\n(api.py)"]
+    DB[(💾 SQLite Lead CRM\nleads.db)]
 
-    subgraph Memory ["🧠 Conversation State"]
-        Mem1["List: Messages"]
-        Mem2["String: Current Intent"]
-        Mem3["JSON: Lead Details"]
+    subgraph Logic_Core ["🧩 LangGraph Orchestrator"]
+        subgraph Hybrid_Brain ["🧠 Dual-LLM Hub"]
+            Gemini["Google Gemini 2.5 Flash\n(Primary)"]
+            Groq["Groq Llama 3.3 70B\n(Active Fallback)"]
+            Gemini -- "429 Error" --> Groq
+        end
+
+        Router{Intent Classifier\n-Structured Output-}
+        Context["History Contextualizer\n-Prompt Re-writing-"]
+        FAISS[(📂 FAISS Vector DB\n-Knowledge Base-)]
+        LeadLogic["Validation Node\n-Lead Extraction-"]
     end
 
-    subgraph Routing ["🔄 Intent Classifier Node"]
-        LLM["Google Gemini 2.5 Flash"]
-        Router["Intent Router"]
-    end
-
-    subgraph Execution ["⚙️ Execution Nodes"]
-        N1["Greeting Handler"]
-        N2["RAG Knowledge Engine\n(FAISS + HuggingFace)"]
-        N3["Lead Capture Check"]
-        API["Backend CRM Tool Execution"]
-    end
-
-    User <--> CLI
-    CLI <--> Graph
-    Graph <--> Memory
-    Graph --> Router
-    Router <--> LLM
-    Router -- "Greeting" --> N1
-    Router -- "Inquiry" --> N2
-    Router -- "Lead" --> N3
-    N3 -- "Incomplete Data" --> User
-    N3 -- "Data Gathered" --> API
+    User <--> UI
+    UI <-->|"JSON POST"| API
+    API <--> Logic_Core
+    
+    Router -- "Inquiry" --> Context --> FAISS --> API
+    Router -- "Lead" --> LeadLogic --> DB
+    UI -- "Get Leads" --> API --> DB
 ```
 
-### Codebase Structure
+### Business Logic Flow
+1.  **Ingestion**: User sends a message via Streamlit.
+2.  **Classification**: The "Dual Brain" classifies intent (Greeting vs Inquiry vs Lead).
+3.  **Knowledge Retrieval**: If "Inquiry", FAISS is queried using local HuggingFace embeddings.
+4.  **Lead Enrichment**: If "Lead", the AI extracts Name/Email/Platform using Pydantic structured output.
+5.  **Persistence**: High-intent data is committed to the SQLite `leads` table.
+6.  **Fail-Safe**: If any API quota is hit, the fallback engine resumes the state exactly where it left off.
+
+---
+
+## 📁 Codebase Hierarchy
 
 ```text
 Conversational AI Agent/
+├── api.py                   # FastAPI: Entry point for the REST API
+├── ui.py                    # Streamlit: Entry point for the Web Interface
 ├── data/
-│   └── knowledge_base.json  # RAG target data (Pricing, Policies)
+│   └── knowledge_base.json  # RAG Data: Manual knowledge injection target
 ├── src/
-│   ├── agent.py             # Brain: LangGraph routing & Gemini structured prompts
-│   ├── rag.py               # Memory: FAISS Vector DB loading & HuggingFace Embeddings
-│   └── tools.py             # CRM: Mock Lead Capture API
-├── main.py                  # Terminal User Interface loop
-└── requirements.txt         # Complete dependency manifest
+│   ├── agent.py             # Logic: LangGraph workflow & LLM Logic
+│   ├── rag.py               # Vector: FAISS Initialization & Retriever setup
+│   ├── tools.py             # Action: Bridge between Agent and SQLite CRM
+│   └── database.py          # SQL Engine: SQLite table management & CRUD
+├── main.py                  # CLI: Legacy Terminal Chat Loop
+├── .env                     # Secrets: Secure API Key Storage
+└── requirements.txt         # Manifest: Complete dependency map
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Installation & Execution
 
-### 1. Clone the repo
+### 1. Preparation
 ```bash
 git clone https://github.com/AayushTripathi07/Conversational-AI-Agent.git
 cd "Conversational AI Agent"
-```
-
-### 2. Install Dependencies
-```bash
 python -m venv c-venv
 source c-venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Configure API Keys (.env)
-Create an `.env` file in the root directory (never commit this file):
-
+### 2. Secrets Configuration (.env)
 ```env
-GOOGLE_API_KEY=your_gemini_api_key_here
+GOOGLE_API_KEY=your_key
+GROQ_API_KEY=your_key
 ```
 
-### 4. Run Platform
-```bash
-python main.py
-```
+### 3. Launching Service (Dual Terminals)
+*   **Backend**: `uvicorn api:app --port 8000`
+*   **Frontend**: `streamlit run ui.py`
+
+---
+
+## 🗺️ Future Roadmap: Bridging the Social Gap
+The ultimate goal of AutoStream AI is to live where the customers are. While the current version features a premium Web Terminal, the next evolution involves **Native Social Platform Integration**:
+
+- **📲 Omnichannel Connectivity**: Utilizing the **Twilio API** and **Slack SDK** to bring the LangGraph engine directly to WhatsApp and Slack.
+- **Real-World Interaction**: Imagine a potential lead texting your business WhatsApp. Our agent doesn't just reply; it executes the same RAG search and CRM capture logic directly through their phone, creating a zero-friction sales experience.
+- **Stateful Mobile Memory**: By mapping thread IDs to phone numbers, the agent will maintain a permanent memory of every customer, allowing for follow-up conversations days later without losing context.
 
 ---
 
 <div align="center">
 
-**Author: Aayush Tripathi**
+**Project by: Aayush Tripathi**
 
 [GitHub](https://github.com/AayushTripathi07) • [LinkedIn](https://www.linkedin.com/in/aayush0712/)
 
