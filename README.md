@@ -30,8 +30,20 @@ In modern digital marketing, **60-70% of leads are lost** due to slow response t
 ### 💡 The Solution
 AutoStream AI solves this through **Intelligence-First Automation**:
 - **Always-On RAG**: It uses a Vector Database (FAISS) to give accurate, data-backed answers about your product instantly.
-- **Fail-Safe Architecture**: It uses a Dual-Brain system. If Google Gemini is overloaded, it instantly switches to Llama-3.3 on Groq. The customer never sees an error.
-- **Automatic CRM Injection**: It identifies "High Intent" users and extracts their details (Name, Email, Platform) into a structured SQL database automatically.
+- **Fail-Safe Architecture**: It uses a Dual-Brain system. If Google Gemini is overloaded, it instantly switches to Llama-3.3 on Groq.
+- **Automatic CRM Injection**: It identifies "High Intent" users and extracts their details automatically.
+
+---
+
+## 🎬 Project Video Demo
+
+<div align="center">
+  <a href="https://youtu.be/wJ3CGDFEgMs">
+    <img src="https://img.youtube.com/vi/wJ3CGDFEgMs/maxresdefault.jpg" alt="AutoStream AI Demo Video" width="800" style="border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+  </a>
+  <br>
+  <p><i>Click above to watch the end-to-end workflow in action!</i></p>
+</div>
 
 ---
 
@@ -93,6 +105,26 @@ flowchart TD
     Router -- "Lead" --> LeadLogic --> DB
     UI -- "Get Leads" --> API --> DB
 ```
+
+---
+
+## 📸 Visual Intelligence Gallery
+
+<div align="center">
+  
+| **Main Interface** | **Chat Intelligence Flow** |
+|:---:|:---:|
+| ![Main UI](assets/screenshots/ui_main.png) | ![Chat Flow](assets/screenshots/ui_chat.png) |
+| *High-Reasoning Chat Interface* | *Context-Aware Conversational Logic* |
+
+| **Lead Extraction Node** | **Admin CRM Dashboard** |
+|:---:|:---:|
+| ![Lead Capture](assets/screenshots/ui_lead.png) | ![Admin Sidebar](assets/screenshots/ui_sidebar.png) |
+| *Automated Pydantic Data Parsing* | *Live SQLite Business Intelligence* |
+
+</div>
+
+---
 
 ### Business Logic Flow
 1.  **Ingestion**: User sends a message via Streamlit.
